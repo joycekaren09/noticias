@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misterio en el Centro Ceremonial - El Heraldo del Valle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;700;900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <style>
+        :root { --paper-color: #f4f1ea; --ink-color: #1a1a1a; }
+        body { background-color: #d1cfc7; color: var(--ink-color); font-family: 'PT Serif', serif; }
+        .paper-texture {
+            background-color: var(--paper-color);
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.2);
+            border-left: 1px solid rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+        .font-masthead { font-family: 'UnifrakturMaguntia', cursive; }
+        .font-headline { font-family: 'Playfair Display', serif; letter-spacing: -0.02em; }
+        .double-border { border-top: 4px double var(--ink-color); border-bottom: 4px double var(--ink-color); }
+        .dropcap::first-letter {
+            float: left; font-size: 4.5rem; line-height: 3.5rem; padding-right: 0.6rem;
+            padding-top: 0.2rem; font-family: 'Playfair Display', serif; font-weight: 900;
+        }
+        .dilema-box { background-color: #f3f4f6; border-left: 4px solid #991b1b; padding: 1.5rem; margin-top: 2rem; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="paper-texture opacity-0" id="main-content">
+        <header class="max-w-4xl mx-auto px-6 py-10 text-center border-b border-black">
+            <a href="main.html" class="font-masthead text-5xl mb-4 block hover:scale-105 transition-transform">El Heraldo del Valle</a>
+            <div class="double-border py-2 text-xs font-bold uppercase tracking-widest">
+                Mayo 2026 • Temoaya, Estado de México • Crónica de lo Extraordinario
+            </div>
+        </header>
+
+        <main class="max-w-4xl mx-auto px-6 py-12 pb-24">
+            <article>
+                <h1 class="font-headline text-5xl md:text-6xl font-black mb-8 leading-tight">MISTERIO EN EL CENTRO CEREMONIAL: MUJER "IRRADIA FUEGO" PARA SALVAR A EXCURSIONISTAS</h1>
+                
+                <div class="mb-10 border-b-2 border-black pb-6">
+                    <p class="text-xl font-bold italic text-zinc-700">
+                        Temoaya, Edoméx. a 15 de mayo de 2026. — Lo que parecía ser una tragedia segura en las gélidas montañas cercanas al Centro Ceremonial Otomí, terminó en un rescate inexplicable. Un grupo de cinco excursionistas extraviados sobrevivió a una helada atípica de -5°C gracias a la aparición de una mujer capaz de generar y emitir temperaturas extremas desde su propio cuerpo, derritiendo la nieve a su paso.
+                    </p>
+                </div>
+
+                <div class="space-y-6 text-lg leading-relaxed text-justify">
+                    <p class="dropcap">Los hechos ocurrieron durante la madrugada del domingo. Según los testimonios, la mujer apareció entre la neblina cuando los jóvenes ya presentaban signos de hipotermia grave. Sin necesidad de fuego o combustible, la misteriosa figura comenzó a irradiar un calor abrasador que estabilizó la temperatura del grupo en minutos. Los rescatistas que llegaron posteriormente señalaron que la tierra a su alrededor estaba vitrificada por la intensidad calórica.</p>
+                    
+                    <p>Sin embargo, el rescate se vio interrumpido por una llovizna repentina. Testigos afirman que, al contacto con el agua fría, la mujer mostró signos de debilidad extrema, respirando con dificultad y perdiendo el brillo de su piel, lo que la obligó a retirarse a las cuevas. Antes de desaparecer, envolvió a uno de los heridos en una cobija. Quienes analizaron la prenda quedaron maravillados: un trabajo de hilandería tan perfecto y detallado que revela a una maestra artesana de los telares, un arte profundamente arraigado en la región.</p>
+                    
+                    <p>En redes sociales, los pobladores de Temoaya ya la han bautizado como <strong>"La Mäkä Sibi"</strong>, que en lengua otomí se traduce como <em>el fuego sagrado</em> o <em>fuego divino</em>.</p>
+                </div>
+
+                <div class="dilema-box">
+                    <h4 class="font-bold uppercase text-sm mb-2 font-sans tracking-widest">El Dilema Social</h4>
+                    <p>Este evento deja a la comunidad dividida. ¿Debería el gobierno rastrear a esta mujer para incorporarla a los cuerpos de Protección Civil, o su capacidad incendiaria representa un riesgo de seguridad nacional en nuestras zonas boscosas? ¿Qué ocurre si sus poderes se salen de control durante la temporada de sequía?</p>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="main.html" class="inline-block border-2 border-black px-6 py-2 font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors">Volver a la Portada</a>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            gsap.to("#main-content", { duration: 1, opacity: 1, ease: "power2.out" });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Tierra Cobra Vida - El Heraldo del Valle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;700;900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <style>
+        :root { --paper-color: #f4f1ea; --ink-color: #1a1a1a; }
+        body { background-color: #d1cfc7; color: var(--ink-color); font-family: 'PT Serif', serif; }
+        .paper-texture {
+            background-color: var(--paper-color);
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.2);
+            border-left: 1px solid rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+        .font-masthead { font-family: 'UnifrakturMaguntia', cursive; }
+        .font-headline { font-family: 'Playfair Display', serif; letter-spacing: -0.02em; }
+        .double-border { border-top: 4px double var(--ink-color); border-bottom: 4px double var(--ink-color); }
+        .dropcap::first-letter {
+            float: left; font-size: 4.5rem; line-height: 3.5rem; padding-right: 0.6rem;
+            padding-top: 0.2rem; font-family: 'Playfair Display', serif; font-weight: 900;
+        }
+        .dilema-box { background-color: #f3f4f6; border-left: 4px solid #166534; padding: 1.5rem; margin-top: 2rem; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="paper-texture opacity-0" id="main-content">
+        <header class="max-w-4xl mx-auto px-6 py-10 text-center border-b border-black">
+            <a href="main.html" class="font-masthead text-5xl mb-4 block hover:scale-105 transition-transform">El Heraldo del Valle</a>
+            <div class="double-border py-2 text-xs font-bold uppercase tracking-widest">
+                Mayo 2026 • Otzolotepec, Estado de México • Crónica de lo Extraordinario
+            </div>
+        </header>
+
+        <main class="max-w-4xl mx-auto px-6 py-12 pb-24">
+            <article>
+                <h1 class="font-headline text-5xl md:text-6xl font-black mb-8 leading-tight">LA TIERRA COBRA VIDA EN VILLA CUAUHTÉMOC: EXTRAÑO SUJETO DETIENE DESLAVE CON RAÍCES GIGANTES</h1>
+                
+                <div class="mb-10 border-b-2 border-black pb-6">
+                    <p class="text-xl font-bold italic text-zinc-700">
+                        Otzolotepec, Edoméx. a 16 de mayo de 2026. — La intensa actividad agrícola de Villa Cuauhtémoc estuvo a punto de ser sepultada por un deslave la tarde de ayer. Sin embargo, toneladas de lodo y roca fueron contenidas en el último segundo por un individuo que, según múltiples testigos, manipuló la vegetación local para crear un muro de contención vivo.
+                    </p>
+                </div>
+
+                <div class="space-y-6 text-lg leading-relaxed text-justify">
+                    <p class="dropcap">Mientras el cerro cedía debido a las lluvias recientes, un hombre vestido con ropa de jornalero se plantó frente a la avalancha. Con movimientos de sus manos, provocó que gigantescas raíces y enredaderas emergieran violentamente del subsuelo, entrelazándose para formar una barrera natural que salvó a tres granjas y decenas de familias.</p>
+                    
+                    <p>Además de su asombrosa afinidad botánica, los lugareños quedaron atónitos al ver cómo, tras el caos, el sujeto poseía una empatía tan profunda que logró calmar a una estampida de caballos y vacas aterrorizadas con solo tocarlos y susurrarles. El extraordinario evento tuvo un abrupto final al amanecer de hoy. Una repentina "helada blanca", típica de la geografía del municipio, cubrió los campos.</p>
+                    
+                    <p>Ante el drástico descenso de temperatura, el individuo quedó paralizado, evidenciando que el frío extremo neutraliza por completo sus capacidades físicas y sobrenaturales, obligándolo a ser auxiliado por los vecinos para huir. Los ejidatarios, agradecidos, han comenzado a referirse a él como <strong>"El Xoxouhqui"</strong>, palabra del náhuatl que significa <em>el verde</em> o <em>aquel que reverdece</em>.</p>
+                </div>
+
+                <div class="dilema-box">
+                    <h4 class="font-bold uppercase text-sm mb-2 font-sans tracking-widest">El Dilema Social</h4>
+                    <p>Las autoridades agrarias se enfrentan a un debate sin precedentes: ¿A quién pertenecen los derechos de la tierra cuando alguien puede manipular la naturaleza a su antojo? Mientras algunos lo ven como un milagro ecológico que podría acabar con el hambre, otros temen que un solo hombre tenga el monopolio sobre el ciclo de la vida y las cosechas del municipio. ¿Debería regularse su existencia?</p>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <a href="main.html" class="inline-block border-2 border-black px-6 py-2 font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors">Volver a la Portada</a>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            gsap.to("#main-content", { duration: 1, opacity: 1, ease: "power2.out" });
+        });
+    </script>
+</body>
+</html>

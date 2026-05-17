@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Heraldo del Valle - Crónica de lo Extraordinario</title>
+    
+    <!-- Librerías Externas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Tipografías -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;700;900&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --paper-color: #f4f1ea; /* Blanco hueso/crema para papel real */
+            --ink-color: #1a1a1a;
+            --accent-red: #991b1b;
+        }
+
+        /* Estética de Papel Envejecido */
+        body {
+            background-color: #d1cfc7; /* Color de fondo exterior más oscuro */
+            color: var(--ink-color);
+            font-family: 'PT Serif', serif;
+            overflow-x: hidden;
+        }
+
+        .paper-texture {
+            background-color: var(--paper-color);
+            background-image: 
+                url("https://www.transparenttextures.com/patterns/paper-fibers.png"),
+                linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 20px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.2);
+            position: relative;
+            min-height: 100vh;
+            border-left: 1px solid rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* Efecto de pliegue de periódico real */
+        .paper-texture::before {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; left: 50%;
+            width: 2px;
+            background: linear-gradient(to right, transparent, rgba(0,0,0,0.05), transparent);
+            pointer-events: none;
+        }
+
+        /* Tipografías Especiales */
+        .font-masthead { font-family: 'UnifrakturMaguntia', cursive; }
+        .font-headline { font-family: 'Playfair Display', serif; letter-spacing: -0.02em; }
+        .font-sans { font-family: 'Montserrat', sans-serif; }
+
+        /* Efectos de Periódico */
+        .double-border {
+            border-top: 4px double var(--ink-color);
+            border-bottom: 4px double var(--ink-color);
+        }
+
+        .column-rule {
+            column-rule: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* Animación de Intro */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .flying-paper {
+            width: 300px;
+            height: 400px;
+            background: var(--paper-color);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+            padding: 20px;
+            transform: rotateY(-45deg) translateZ(500px) scale(0.1);
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Imágenes Interactivas */
+        .news-image-container {
+            position: relative;
+            overflow: hidden;
+            filter: sepia(0.5) contrast(1.2) grayscale(1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #000;
+        }
+
+        .news-image-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.2) 100%);
+            pointer-events: none;
+        }
+
+        .news-card:hover .news-image-container {
+            filter: sepia(0) contrast(1.1) grayscale(0);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px var(--glow-color, rgba(0,0,0,0.2));
+        }
+
+        /* Glitches y Brillos Tecnológicos */
+        .tech-glow {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .news-card:hover .tech-glow { opacity: 1; animation: scan 2s linear infinite; }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-200px); }
+        }
+
+        /* Efecto Page Flip */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--paper-color);
+            z-index: 90;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+            transform-origin: right;
+        }
+
+        /* Dropcap */
+        .dropcap::first-letter {
+            float: left;
+            font-size: 4.5rem;
+            line-height: 3.5rem;
+            padding-right: 0.6rem;
+            padding-top: 0.2rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            color: var(--ink-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animación de Entrada -->
+    <div id="intro-overlay">
+        <div class="flying-paper">
+            <h1 class="font-masthead text-4xl mb-2">Extra! Extra!</h1>
+            <p class="font-headline text-2xl font-black uppercase">El Heraldo del Valle</p>
+            <div class="w-20 h-1 bg-black my-4"></div>
+            <p class="text-sm italic">Mayo 2026: La realidad se quiebra en el Estado de México</p>
+        </div>
+    </div>
+
+    <!-- Transición de Página -->
+    <div class="page-transition" id="page-flip"></div>
+
+    <div class="paper-texture min-h-screen pb-20 opacity-0" id="main-content">
+        
+        <!-- HEADER -->
+        <header class="max-w-7xl mx-auto px-6 py-10 border-b-2 border-black">
+            <div class="flex justify-between items-center text-xs font-bold uppercase tracking-[0.3em] mb-4">
+                <span>Toluca, México • Vol. CXII</span>
+                <span id="current-date">Domingo, 17 de Mayo de 2026</span>
+                <span>Precio: 10.00 Pesos</span>
+            </div>
+            
+            <div class="text-center py-6">
+                <h1 class="font-masthead text-7xl md:text-9xl mb-2 hover:scale-105 transition-transform cursor-default">El Heraldo del Valle</h1>
+                <p class="font-headline italic text-xl md:text-2xl text-zinc-700">"¿Héroes o Amenazas? El debate que divide al Estado de México"</p>
+            </div>
+
+            <div class="double-border py-2 flex justify-between items-center text-sm font-bold uppercase">
+                <nav class="flex gap-8">
+                    <a href="#" class="hover:text-red-800 transition-colors">Local</a>
+                    <a href="#" class="hover:text-red-800 transition-colors">Seguridad</a>
+                    <a href="#" class="hover:text-red-800 transition-colors">Opinión</a>
+                    <a href="#" class="hover:text-red-800 transition-colors">Especiales</a>
+                </nav>
+                <div class="text-red-800 animate-pulse tracking-widest">● Última Hora</div>
+            </div>
+        </header>
+
+        <!-- HERO SECTION: NOTICIA 7 -->
+        <section class="max-w-7xl mx-auto px-6 py-12 border-b-2 border-black">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <div class="lg:col-span-9">
+                    <article class="news-card group" data-power="gray">
+                        <span class="inline-block bg-black text-white px-3 py-1 text-xs font-bold uppercase mb-4 tracking-tighter">Nota de Ocho Columnas</span>
+                        <h2 class="font-headline text-5xl md:text-7xl font-black mb-6 leading-none cursor-pointer hover:text-red-900 transition-colors">
+                            ¿EJÉRCITO DE TITANES? EL GOBIERNO BUSCA UNIFICAR A LOS "FENÓMENOS" DEL VALLE
+                        </h2>
+                        <div class="news-image-container mb-6 aspect-video">
+                            <img src="img/hero.jpg" alt="Palacio de Gobierno" class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 transition-all duration-700">
+                            <div class="tech-glow" style="--glow-color: #ef4444;"></div>
+                        </div>
+                        <div class="lg:columns-2 gap-8 text-lg leading-relaxed text-justify">
+                            <p class="dropcap font-bold">En una movida política sin precedentes, el Palacio de Gobierno de Toluca ha confirmado la creación de una "Unidad de Enlace Metropolitana".</p>
+                            <p>La intención oficial es integrar a los individuos con capacidades extraordinarias —como la mujer de fuego de Temoaya o el velocista de Lerma— a las filas de protección civil. Sin embargo, la comunidad mexiquense se encuentra en un estado de paroxismo. El temor a daños colaterales masivos y la posible militarización de estos "dones" ha detonado protestas en las principales plazas. ¿Estamos ante nuestros nuevos guardianes o ante una amenaza de seguridad nacional que el Estado no podrá contener?</p>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- SIDEBAR DERECHA: NOTICIAS REALES Y PUBLICIDAD -->
+                <aside class="lg:col-span-3 space-y-8">
+                    <!-- NOTICIA REAL 1 -->
+                    <div class="border-b border-zinc-300 pb-6">
+                        <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Crisis Social</h4>
+                        <img src="img/escasez_agua.jpg" class="w-full grayscale mb-2 border border-black p-1">
+                        <h5 class="font-headline text-lg font-bold leading-tight">Aumenta escasez de agua en colonias populares de Toluca</h5>
+                        <p class="text-[11px] italic mt-1 text-red-800 font-bold">"¿Y dónde están los héroes para traer lluvia a nuestras presas?" — Vecinos indignados.</p>
+                    </div>
+
+                    <!-- PUBLICIDAD 1 -->
+                    <div class="bg-white border-2 border-zinc-800 p-4 shadow-sm transform -rotate-1">
+                        <p class="text-[8px] uppercase tracking-widest mb-1 text-center">Publicidad</p>
+                        <h6 class="font-masthead text-xl text-center">Panadería "La Especial"</h6>
+                        <p class="text-[10px] text-center italic">El auténtico pan de Metepec desde 1945. ¡Pruebe nuestro pan de pulque!</p>
+                        <div class="mt-2 text-center text-[9px] font-bold border-t border-black pt-1">Av. Juárez No. 104</div>
+                    </div>
+
+                    <!-- NOTICIA REAL 2 -->
+                    <div class="border-b border-zinc-300 pb-6">
+                        <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Clima Extremo</h4>
+                        <img src="img/contaminacion_lerma.jpg" class="w-full grayscale mb-2 border border-black p-1">
+                        <h5 class="font-headline text-lg font-bold leading-tight">Contaminación en el Río Lerma alcanza niveles históricos</h5>
+                        <p class="text-[11px] italic mt-1 text-red-800 font-bold">El viento no basta: ¿Podrá el "Ehecatl" limpiar el aire que respiramos o solo corre para sí mismo?</p>
+                    </div>
+
+                    <!-- PUBLICIDAD 2 -->
+                    <div class="border-4 border-double border-red-900 p-4 bg-zinc-50 transform rotate-1">
+                        <h6 class="font-headline font-black text-red-900 text-center uppercase text-sm">Zapatos "El Borceguí"</h6>
+                        <p class="text-[10px] text-center mt-1">Calidad que dura toda la vida. Piel legítima garantizada.</p>
+                        <p class="text-center text-xs font-black mt-2">¡OFERTAS DE MAYO!</p>
+                    </div>
+
+                    <!-- NOTICIA REAL 3 -->
+                    <div>
+                        <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Seguridad Ciudadana</h4>
+                        <img src="img/baches_tollocan.jpg" class="w-full grayscale mb-2 border border-black p-1">
+                        <h5 class="font-headline text-lg font-bold leading-tight">Baches en Paseo Tollocan provocan múltiples accidentes</h5>
+                        <p class="text-[11px] italic mt-1 text-red-800 font-bold">¿Necesitamos piel de barro para sobrevivir a los hoyos de la ciudad? El gobierno guarda silencio.</p>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- GRID DE NOTICIAS SECUNDARIAS -->
+        <section class="max-w-7xl mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 column-rule">
+                
+                <!-- NOTA 1: TEMOAYA -->
+                <article class="news-card group" data-id="1" data-glow="#f97316">
+                    <span class="text-xs font-bold uppercase text-red-800">Temoaya / Crónica Roja</span>
+                    <a href="temoaya.html" class="block group">
+                        <h3 class="font-headline text-3xl font-black my-3 group-hover:underline group-hover:text-red-900 transition-colors">Misterio en el Otomí: La mujer que irradia fuego</h3>
+                    </a>
+                    <div class="news-image-container aspect-square mb-4">
+                        <img src="img/temoaya.jpg" class="w-full h-full object-cover">
+                        <div class="tech-glow" style="--glow-color: #f97316;"></div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4 line-clamp-3">Un grupo de excursionistas sobrevivió a -5°C gracias a "La Mäkä Sibi", una mujer que emite calor extremo pero debilita ante la lluvia...</p>
+                </article>
+
+                <!-- NOTA 2: OTZOLOTEPEC -->
+                <article class="news-card group" data-id="2" data-glow="#22c55e">
+                    <span class="text-xs font-bold uppercase text-red-800">Otzolotepec / Campo</span>
+                    <a href="otzolotepec.html" class="block group">
+                        <h3 class="font-headline text-3xl font-black my-3 group-hover:underline group-hover:text-red-900 transition-colors">"El Xoxouhqui": La tierra cobra vida en Villa Cuauhtémoc</h3>
+                    </a>
+                    <div class="news-image-container aspect-square mb-4">
+                        <img src="img/otzolotepec.jpg" class="w-full h-full object-cover">
+                        <div class="tech-glow" style="--glow-color: #22c55e;"></div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4 line-clamp-3">Un extraño sujeto detuvo un deslave manipulando raíces gigantes. El frío extremo parece ser su única debilidad mortal...</p>
+                </article>
+
+                <!-- NOTA 3: XONACATLÁN -->
+                <article class="news-card group" data-id="3" data-glow="#6366f1">
+                    <span class="text-xs font-bold uppercase text-red-800">Xonacatlán / Industria</span>
+                    <a href="xonacatlan.html" class="block group">
+                        <h3 class="font-headline text-3xl font-black my-3 group-hover:underline group-hover:text-red-900 transition-colors">El héroe de la "Ciudad Peluche" desafía la física</h3>
+                    </a>
+                    <div class="news-image-container aspect-square mb-4">
+                        <img src="img/xonacatlan.jpg" class="w-full h-full object-cover">
+                        <div class="tech-glow" style="--glow-color: #6366f1;"></div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4 line-clamp-3">"El Ololli" evitó una tragedia industrial estirando su cuerpo como hule, aunque los cortes de acero revelaron su vulnerabilidad...</p>
+                </article>
+
+                <!-- NOTA 4: LERMA -->
+                <article class="news-card group" data-id="4" data-glow="#3b82f6">
+                    <span class="text-xs font-bold uppercase text-red-800">Lerma / Vialidad</span>
+                    <a href="lerma.html" class="block group">
+                        <h3 class="font-headline text-3xl font-black my-3 group-hover:underline group-hover:text-red-900 transition-colors">¿Fantasma en la carretera? Velocidad supersónica en la Mex-Tol</h3>
+                    </a>
+                    <div class="news-image-container aspect-square mb-4">
+                        <img src="img/lerma.jpg" class="w-full h-full object-cover">
+                        <div class="tech-glow" style="--glow-color: #3b82f6;"></div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4 line-clamp-3">"El Ehecatl" salvó un autobús sin frenos. Su metabolismo se detiene ante la toxicidad de los canales industriales...</p>
+                </article>
+
+                <!-- NOTA 5: METEPEC -->
+                <article class="news-card group" data-id="5" data-glow="#78350f">
+                    <span class="text-xs font-bold uppercase text-red-800">Metepec / Seguridad</span>
+                    <a href="metepec.html" class="block group">
+                        <h3 class="font-headline text-3xl font-black my-3 group-hover:underline group-hover:text-red-900 transition-colors">"El Zoquitl": El hombre de barro que frustró el asalto</h3>
+                    </a>
+                    <div class="news-image-container aspect-square mb-4">
+                        <img src="img/metepec.jpg" class="w-full h-full object-cover">
+                        <div class="tech-glow" style="--glow-color: #78350f;"></div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4 line-clamp-3">Piel de piedra y fuerza bruta. El ebanista que doblega balas escapó ante la frecuencia de las sirenas policiales...</p>
+                </article>
+
+                <!-- NOTA 6: TOLUCA -->
+                <article class="news-card group" data-id="6" data-glow="#fbbf24">
+                    <span class="text-xs font-bold uppercase text-red-800">Toluca / Los Portales</span>
+                    <a href="toluca.html" class="block group">
+                        <h3 class="font-headline text-3xl font-black my-3 group-hover:underline group-hover:text-red-900 transition-colors">Milagro psíquico: Levita campana de una tonelada</h3>
+                    </a>
+                    <div class="news-image-container aspect-square mb-4">
+                        <img src="img/toluca.jpg" class="w-full h-full object-cover">
+                        <div class="tech-glow" style="--glow-color: #fbbf24;"></div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4 line-clamp-3">"El Ilhuicatl" salvó a turistas con telequinesis y políglota instinto. La luz solar directa drena su poder cerebral...</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="max-w-7xl mx-auto px-6 py-12 border-t-2 border-black text-center">
+            <h2 class="font-masthead text-5xl mb-6">El Heraldo del Valle</h2>
+            <p class="text-xs uppercase tracking-widest opacity-60">© 2026 Todos los derechos reservados • Toluca de Lerdo, México</p>
+        </footer>
+    </div>
+
+    <!-- MODAL DE NOTICIA COMPLETA -->
+    <div id="news-modal" class="fixed inset-0 bg-black/90 z-[200] hidden flex items-center justify-center p-4">
+        <div class="paper-texture max-w-4xl w-full max-h-[90vh] overflow-y-auto p-10 relative">
+            <button id="close-modal" class="absolute top-5 right-5 text-3xl font-bold">×</button>
+            <div id="modal-content">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de las Noticias
+        const newsData = {
+            1: {
+                title: 'MISTERIO EN EL CENTRO CEREMONIAL: MUJER "IRRADIA FUEGO"',
+                lead: 'Temoaya, Edoméx. 15 de mayo de 2026. — Lo que parecía ser una tragedia segura en las gélidas montañas terminó en un rescate inexplicable.',
+                body: 'Un grupo de cinco excursionistas sobrevivió a -5°C gracias a una mujer capaz de generar temperaturas extremas. Los rescatistas señalaron que la tierra quedó vitrificada. Al contacto con la lluvia, mostró debilidad extrema. Los pobladores la llaman "La Mäkä Sibi" (Fuego Sagrado).',
+                dilema: '¿Debería el gobierno reclutarla o su capacidad representa un riesgo de incendio forestal nacional?'
+            },
+            2: {
+                title: 'LA TIERRA COBRA VIDA EN VILLA CUAUHTÉMOC',
+                lead: 'Otzolotepec, Edoméx. 16 de mayo de 2026. — La actividad agrícola estuvo a punto de ser sepultada por un deslave.',
+                body: 'Un individuo manipuló la vegetación para crear un muro vivo de raíces. "El Xoxouhqui" (El Verde) salvó tres granjas. El frío extremo de la "helada blanca" neutraliza sus capacidades físicas.',
+                dilema: '¿A quién pertenecen los derechos de la tierra cuando alguien puede manipular la naturaleza a su antojo?'
+            },
+            3: {
+                title: 'EL HÉROE FLEXIBLE DE LA "CIUDAD PELUCHE"',
+                lead: 'Xonacatlán, Edoméx. 17 de mayo de 2026. — Colapso en nave industrial amenazó a docenas de trabajadoras.',
+                body: '"El Ololli" estiró su cuerpo más de diez metros para sostener vigas de acero. Posee memoria fotográfica absoluta, pero los objetos punzocortantes rasgan su forma con facilidad.',
+                dilema: '¿Es esto el nacimiento de una nueva forma de esclavitud laboral para personas con capacidades sobrehumanas?'
+            },
+            4: {
+                title: '¿FANTASMA EN LA CARRETERA? VELOCIDAD SUPERSÓNICA',
+                lead: 'Lerma, Edoméx. 14 de mayo de 2026. — La autopista México-Toluca fue escenario de un evento supersónico.',
+                body: '"El Ehecatl" guió un autobús sin frenos a salvo. Su oído absoluto detectó la microfisura en el motor. La contaminación industrial interrumpe su acelerado metabolismo.',
+                dilema: '¿Quién se hará responsable penalmente si su velocidad provoca un accidente por desplazamiento de aire?'
+            },
+            5: {
+                title: 'EL HOMBRE DE BARRO FRUSTRA ASALTO EN METEPEC',
+                lead: 'Metepec, Edoméx. 16 de mayo de 2026. — Comando armado intentó asaltar una joyería en la Zona Dorada.',
+                body: '"El Zoquitl" posee piel de barro impenetrable. Dobló cañones de armas como papel. Sin embargo, la frecuencia sónica de las sirenas agrieta su coraza mineral.',
+                dilema: '¿Se debe permitir el vigilantismo cuando el individuo es literalmente a prueba de balas?'
+            },
+            6: {
+                title: 'MILAGRO EN LOS PORTALES: TELEQUINESIS PURA',
+                lead: 'Toluca, Edoméx. 17 de mayo de 2026. — Caída de pesada campana histórica fue evitada por un transeúnte.',
+                body: '"El Ilhuicatl" suspendió el bronce con su mente y guió a la multitud en tres idiomas. La radiación solar directa incapacita sus redes neuronales.',
+                dilema: '¿Debería ser reclutado como activo militar o su libertad individual está por encima del interés del Estado?'
+            }
+        };
+
+        // Animación de Entrada con GSAP
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+
+            tl.to(".flying-paper", {
+                duration: 1.5,
+                opacity: 1,
+                scale: 1,
+                rotateY: 0,
+                z: 0,
+                ease: "power4.out"
+            })
+            .to("#intro-overlay", {
+                duration: 1,
+                y: "-100%",
+                ease: "expo.inOut",
+                delay: 1
+            })
+            .to("#main-content", {
+                duration: 1,
+                opacity: 1,
+                ease: "power2.out"
+            }, "-=0.5");
+        });
+
+        // Lógica del Modal y Page Flip
+        document.querySelectorAll('.read-more').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.target.dataset.id;
+                const data = newsData[id];
+                
+                // Efecto Page Flip
+                gsap.to("#page-flip", {
+                    width: "100%",
+                    duration: 0.6,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        showModal(data);
+                        gsap.to("#page-flip", {
+                            width: "0%",
+                            left: 0,
+                            duration: 0.6,
+                            ease: "power2.inOut",
+                            delay: 0.2
+                        });
+                    }
+                });
+            });
+        });
+
+        function showModal(data) {
+            const content = document.getElementById('modal-content');
+            content.innerHTML = `
+                <h2 class="font-headline text-5xl font-black mb-6 border-b-2 border-black pb-4">${data.title}</h2>
+                <p class="text-xl font-bold italic mb-6 text-zinc-700">${data.lead}</p>
+                <div class="space-y-4 text-lg leading-relaxed text-justify mb-10">
+                    <p class="dropcap">${data.body}</p>
+                </div>
+                <div class="bg-red-900 text-white p-8">
+                    <h4 class="font-sans font-black text-xs uppercase tracking-widest mb-2">El Dilema Social</h4>
+                    <p class="italic text-xl">"${data.dilema}"</p>
+                </div>
+            `;
+            document.getElementById('news-modal').classList.remove('hidden');
+        }
+
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('news-modal').classList.add('hidden');
+        });
+
+    </script>
+</body>
+</html>
