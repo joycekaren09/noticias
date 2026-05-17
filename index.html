@@ -79,11 +79,13 @@
         }
 
         .flying-paper {
-            width: 300px;
-            height: 400px;
+            width: 90vw;
+            max-width: 600px;
+            height: 80vh;
+            max-height: 800px;
             background: var(--paper-color);
             box-shadow: 0 50px 100px rgba(0,0,0,0.5);
-            padding: 20px;
+            padding: 40px;
             transform: rotateY(-45deg) translateZ(500px) scale(0.1);
             opacity: 0;
             display: flex;
@@ -91,6 +93,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            border: 1px solid rgba(0,0,0,0.1);
         }
 
         /* Imágenes Interactivas */
@@ -166,10 +169,11 @@
     <!-- Animación de Entrada -->
     <div id="intro-overlay">
         <div class="flying-paper">
-            <h1 class="font-masthead text-4xl mb-2">Extra! Extra!</h1>
-            <p class="font-headline text-2xl font-black uppercase">El Heraldo del Valle</p>
-            <div class="w-20 h-1 bg-black my-4"></div>
-            <p class="text-sm italic">Mayo 2026: La realidad se quiebra en el Estado de México</p>
+            <h1 class="font-headline text-5xl md:text-7xl font-black mb-2 uppercase">EXTRA!</h1>
+            <h1 class="font-headline text-5xl md:text-7xl font-black mb-6 uppercase">EXTRA!</h1>
+            <p class="font-masthead text-3xl md:text-5xl mb-4">El Heraldo del Valle</p>
+            <div class="w-32 h-1.5 bg-black my-6"></div>
+            <p class="text-lg md:text-2xl italic">Mayo 2026: La realidad se quiebra en el Estado de México</p>
         </div>
     </div>
 
@@ -413,16 +417,21 @@
             tl.to(".flying-paper", {
                 duration: 1.5,
                 opacity: 1,
-                scale: 1,
+                scale: 1.5, // Zoom inicial fuerte
                 rotateY: 0,
                 z: 0,
                 ease: "power4.out"
             })
+            .to(".flying-paper", {
+                duration: 1.2,
+                scale: 1, // Se estabiliza
+                ease: "back.out(1.7)"
+            }, "-=0.3")
             .to("#intro-overlay", {
                 duration: 1,
                 y: "-100%",
                 ease: "expo.inOut",
-                delay: 1
+                delay: 0.8
             })
             .to("#main-content", {
                 duration: 1,
