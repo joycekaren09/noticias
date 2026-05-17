@@ -37,8 +37,10 @@
             box-shadow: 0 0 50px rgba(0,0,0,0.2);
             position: relative;
             min-height: 100vh;
+            width: 100%;
             border-left: 1px solid rgba(0,0,0,0.1);
             border-right: 1px solid rgba(0,0,0,0.1);
+            margin: 0 auto;
         }
 
         /* Efecto de pliegue de periódico real */
@@ -81,11 +83,12 @@
         .flying-paper {
             width: 90vw;
             max-width: 600px;
-            height: 80vh;
-            max-height: 800px;
+            height: auto;
+            min-height: 60vh;
+            max-height: 90vh;
             background: var(--paper-color);
             box-shadow: 0 50px 100px rgba(0,0,0,0.5);
-            padding: 40px;
+            padding: 30px;
             transform: rotateY(-45deg) translateZ(500px) scale(0.1);
             opacity: 0;
             display: flex;
@@ -94,6 +97,7 @@
             justify-content: center;
             text-align: center;
             border: 1px solid rgba(0,0,0,0.1);
+            overflow: hidden;
         }
 
         /* Imágenes Interactivas */
@@ -214,8 +218,8 @@
                         <h2 class="font-headline text-3xl sm:text-5xl md:text-7xl font-black mb-6 leading-none cursor-pointer hover:text-red-900 transition-colors">
                             ¿EJÉRCITO DE TITANES? EL GOBIERNO BUSCA UNIFICAR A LOS "FENÓMENOS" DEL VALLE
                         </h2>
-                        <div class="news-image-container mb-6 aspect-video">
-                            <img src="img/hero.jpg" alt="Palacio de Gobierno" class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 transition-all duration-700">
+                        <div class="news-image-container mb-6 aspect-video min-h-[250px] sm:min-h-0">
+                            <img src="img/hero.jpg" alt="Palacio de Gobierno" class="w-full h-full object-cover grayscale brightness-90 sm:brightness-75 group-hover:grayscale-0 transition-all duration-700">
                             <div class="tech-glow" style="--glow-color: #ef4444;"></div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 text-base md:text-lg leading-relaxed text-justify">
@@ -428,16 +432,25 @@
                 ease: "back.out(1.7)"
             }, "-=0.3")
             .to("#intro-overlay", {
-                duration: 1,
-                y: "-100%",
+                duration: 1.2,
+                yPercent: -100, // Más fiable que y: "-100%"
                 ease: "expo.inOut",
-                delay: 0.8
+                delay: 0.8,
+                onComplete: () => {
+                    document.getElementById('intro-overlay').style.display = 'none';
+                }
             })
             .to("#main-content", {
                 duration: 1,
                 opacity: 1,
                 ease: "power2.out"
-            }, "-=0.5");
+            }, "-=0.8");
+
+            // Fallback de seguridad para móviles
+            setTimeout(() => {
+                document.getElementById('intro-overlay').style.display = 'none';
+                document.getElementById('main-content').style.opacity = '1';
+            }, 5000);
         });
 
         // Lógica del Modal y Page Flip
