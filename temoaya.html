@@ -30,6 +30,11 @@
 </head>
 <body>
     <div class="paper-texture opacity-0" id="main-content">
+        <!-- Botón de Inicio Superior Derecha -->
+        <div class="fixed top-4 right-4 z-50">
+            <a href="index.html" class="bg-black text-white px-4 py-2 font-bold uppercase text-[10px] tracking-[0.2em] hover:bg-red-900 transition-colors shadow-lg">Inicio</a>
+        </div>
+
         <header class="max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-10 text-center border-b border-black">
             <a href="index.html" class="font-masthead text-4xl md:text-5xl mb-4 block hover:scale-105 transition-transform leading-none">El Heraldo del Valle</a>
             <div class="double-border py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest">
@@ -60,11 +65,26 @@
                     <p>Este evento deja a la comunidad dividida. ¿Debería el gobierno rastrear a esta mujer para incorporarla a los cuerpos de Protección Civil, o su capacidad incendiaria representa un riesgo de seguridad nacional en nuestras zonas boscosas? ¿Qué ocurre si sus poderes se salen de control durante la temporada de sequía?</p>
                 </div>
 
-                <div class="mt-12 text-center">
-                    <a href="index.html" class="inline-block border-2 border-black px-6 py-2 font-bold uppercase text-sm hover:bg-black hover:text-white transition-colors">Volver a la Portada</a>
+                <!-- Navegación entre noticias -->
+                <div class="mt-16 flex justify-between items-center border-t-2 border-black pt-8">
+                    <div class="w-1/3">
+                        <a href="titanes.html" class="font-bold uppercase text-xs hover:text-red-800 transition-colors">← Anterior</a>
+                    </div>
+                    <div class="w-1/3 text-center">
+                        <a href="index.html" class="inline-block border-2 border-black px-4 py-1.5 font-bold uppercase text-[10px] hover:bg-black hover:text-white transition-colors tracking-widest">Inicio</a>
+                    </div>
+                    <div class="w-1/3 text-right">
+                        <a href="otzolotepec.html" class="font-bold uppercase text-xs hover:text-red-800 transition-colors">Siguiente →</a>
+                    </div>
                 </div>
             </article>
         </main>
+
+        <!-- FOOTER -->
+        <footer class="max-w-4xl mx-auto px-4 md:px-6 py-8 border-t border-black text-center">
+            <p class="text-[10px] md:text-xs uppercase tracking-widest opacity-60">© 2026 Joyce Karen S.G. • Todos los derechos reservados</p>
+            <p class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] opacity-40 mt-2">Esta es una página con fines educativos. Las noticias presentadas son ficticias.</p>
+        </footer>
     </div>
 
     <script>
